@@ -37,7 +37,7 @@ public class ObjetoRemoto extends UnicastRemoteObject
         System.out.println(this.getResult());
         return this.getResult();
     }
-    public int resta (int a,int b) 
+    public synchronized int resta (int a,int b)  
     {
         System.out.print("Restando: " + a +" - " + b + "= " );
         this.setResult(a-b);

@@ -1,0 +1,21 @@
+#!/usr/bin/python3
+
+import cgi, cgitb, os
+from responses_html.response_html import ResponseHtml
+from orm.orm import Orm
+
+if __name__ == "__main__" :
+    html = ResponseHtml()
+    if os.environ['REQUEST_METHOD'] == 'POST':
+        form = cgi.FieldStorage()
+        try:
+            Orm.createUser(form)
+            html.set_http_alert("Usuario dado de alta correctamente.", "success")
+            html.set_http_response_alta_usuario()
+        except Exception as e:
+            html.set_http_alert(e.__str__(), "danger")
+            html.set_http_response_alta_usuario()
+        html.render()
+    else:
+        html.set_http_response_alta_usuario()
+        html.render()
