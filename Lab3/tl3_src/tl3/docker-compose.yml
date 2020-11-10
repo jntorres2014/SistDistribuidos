@@ -14,8 +14,8 @@ services:
   postgres:
     build: ./db
     container_name: "tl3_db"
-    #volumes:
-      #- /db/data:/volume
+    volumes:
+     - /db/data:/volume
     ports:
       - "5555:5432"
     environment:

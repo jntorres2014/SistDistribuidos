@@ -6,9 +6,9 @@
     password character(20) NOT NULL
 );
 
-Create Table jobs(
-  id_trabajo PRIMARY KEY,
-  id_users integer NOT NULL,
+CREATE TABLE jobs(
+  id serial PRIMARY KEY,
+  id_user integer NOT NULL,
   lugar_trabajo character (70) NOT NULL,
   fecha_inicio Date NOT NULL,
   fecha_fin Date NOT NULL,
@@ -19,12 +19,13 @@ Create Table jobs(
 );
 
 
+
 INSERT INTO users (name, age, username, password) 
   VALUES ('Pedro Konstantinoff',36,'pedro','un_password'); 
 
-INSERT INTO jobs (cargo, fecha_inicio, fecha_fin, observacion )
-  VALUES (1,'crack', 2020-10-11,2021-10-11,"Trabaja bien");
+INSERT INTO jobs (lugar_trabajo, cargo, fecha_inicio, fecha_fin, observacion)
+  VALUES (1,'La anonima','gerente', 2020-10-11,2021-10-11,"Trabaja bien");
 
 SELECT * FROM users;
 
-SELECT * FROM jobs;
+Select * FROM jobs;
