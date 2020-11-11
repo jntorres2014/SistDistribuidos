@@ -33,7 +33,6 @@ session = Session()
 
 class User(declarative_base()):
     __tablename__ = 'users'
-
     id = Column(Integer, primary_key=True)
     name = Column(String)
     username = Column(String)
@@ -45,7 +44,6 @@ class User(declarative_base()):
         self.age = age
         self.username = username
         self.password = password
-
 
 def query_users():
     users = []
@@ -96,5 +94,5 @@ if os.environ['REQUEST_METHOD'] == 'DELETE':
 if not response:
     response = {}
 
-
 print(json.JSONEncoder().encode(response))
+

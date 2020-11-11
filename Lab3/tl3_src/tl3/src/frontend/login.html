@@ -13,11 +13,8 @@
             $(document).ready(function(){
                 console.log('Documento listo!!!!');
                 $('#log_user').submit(function(event) {  
-                console.log('Entre al login');
-                console.log('Entre al login');                    
-                console.log('Entre al login');
                 var loginData = {
-                    'name' : $('#user').val(),
+                    'user' : $('#user').val(),
                     'pass' : $('#pass').val()
                 };
                 $.ajax({
@@ -73,14 +70,14 @@
 <meta charset="utf-8">
 <body>
     <div id="Login">
-        <form method="POST" action="/cgi-bin/login.py">
+        <form method="POST" action="/cgi-bin/login.py" id="log_user" >
             <!-- Usuario -->
-            <label for="name">Usuario:</label>
-            <input id="user" type="name">
+            <label for="form" >Usuario:</label>
+            <input id="user" name="user" type="user">
             <!-- Contraseña -->
-            <label for="username">Contraseña:</label>   
-            <input id="pass" type="password">    
-            <button type="submit" class="btn btn-success" ">Login Prueba</button>
+            <label for="pass">Contraseña:</label>   
+            <input id="pass" name="" type="password">    
+            <button type="submit" class="btn btn-success">Login Prueba</button>
             
         </form> 
     </div>

@@ -15,8 +15,10 @@
         }
 
         function get_jobs(){
-            $("#users_tbody").empty();
+            $("#jobs_tbody").empty();
             var jqxhr = $.get("/cgi-bin/jobs.py", function( jobs) {
+                console.log('Cargando trabajos de un cliente || ');
+                console.log('Cargando trabajos de un cliente || ');
                 console.log('Cargando trabajos de un cliente || ');
                 console.log(jobs);
                 for (row in jobs){
@@ -41,7 +43,10 @@
         $(document).ready(function(){            
             get_jobs();
 
-            $('#new_job').submit(function(event) {
+            $('#new_jobs').submit(function(event) {
+                console.log('Entre al new jobs')
+                console.log('Entre al new jobs')
+                console.log('Entre al new jobs')
                 var formData = {
                     'lugar_trabajo' : $('#lugar_trabajo').val(),
                     'cargo'     : $('#cargo').val(),
@@ -49,7 +54,6 @@
                     'fecha_fin' : $('#fecha_fin').val(),
                     'descripcion' : $('#observacion').val()
                 };
-
                 $.ajax({
                     type        : 'POST',
                     url         : '/cgi-bin/jobs.py',
@@ -60,7 +64,7 @@
                 .done(function(data) {
                     alert('El trabajo se guardo correctamente');
                     $('#toggle_modal').click()
-                    get_users();
+                    get_jobs();
                 })
                 .fail(function(data){
                     alert('No se pudo guardar el trabajo del usuario');
@@ -127,7 +131,7 @@
             </button>
           </div>
           <div class="modal-body"> 
-            <form id="new_job" action="/cgi-bin/jobs.py" method="post">
+            <form id="new_jobs" action="/cgi-bin/jobs.py" method="POST" >
                 <div class="form-group">
                     <label for="cargo">Lugar de Trabajo</label>
                     <input type="text" class="form-control" id="name" name="lugar_trabajo"  placeholder="Empresa donde trabajo">

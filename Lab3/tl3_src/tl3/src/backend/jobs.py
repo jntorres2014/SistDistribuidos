@@ -3,6 +3,7 @@ import os
 import cgi
 import cgitb
 import json
+import logging
 import sqlalchemy
 from sqlalchemy import *
 from sqlalchemy.ext.declarative import declarative_base
@@ -10,6 +11,8 @@ from sqlalchemy.orm import sessionmaker
 
 cgitb.enable()
 
+
+logger= logging.getLogger()
 print("Content-Type: application/json;charset=utf-8")
 print()
 
@@ -22,8 +25,8 @@ jobs_table = Table('jobs', metadata,
      Column('id', Integer, primary_key=True),
      Column('id_user', String),
      Column('lugar_trabajo', String),
-     Column('fecha_inicio', Integer),
-     Column('fecha_fin', String),
+     Column('fecha_inicio', Date),
+     Column('fecha_fin', Date),
      Column('cargo', String),
      Column('observacion', String),
 )
@@ -35,7 +38,6 @@ session = Session()
 
 class Jobs(declarative_base()):
     __tablename__ = 'jobs'
-
     id = Column(Integer, primary_key=True)
     id_user = Column(Integer)
     lugar_trabajo = Column(String)
@@ -53,13 +55,17 @@ class Jobs(declarative_base()):
         self.cargo= cargo
         self.observacion= observacion
 
-
 def query_jobs():
     jobs = []
+    logging.exception(session.query(Jobs).all())
     for u in session.query(Jobs).all():
+        logging.exception("u")
         job = u.__dict__
         job.pop('_sa_instance_state', None)    
         jobs.append(job)
+    logging.exception("VALORES FIN")    
+    logging.exception(jobs)
+
     return jobs
 
 def update_user(user):
@@ -95,11 +101,13 @@ def create_job():
 
 
 if os.environ['REQUEST_METHOD'] == 'POST':
+    logging.exception("Entre al POST")
     response = create_job()
-if os.environ['REQUEST_METHOD']== 'GET':
-    response.query_jobs()
-if os.environ['REQUEST_METHOD']== 'PUT':
-    request.update_user()
+if os.environ['REQUEST_METHOD'] == 'GET':
+    logging.exception("Entre al GET desde el if")    
+    response = query_jobs()
+#if os.environ['REQUEST_METHOD'] == 'PUT':
+#   response.update_user()
 
 
 

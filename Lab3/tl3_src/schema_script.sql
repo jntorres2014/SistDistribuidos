@@ -30,6 +30,6 @@ INSERT INTO users (name, age, username, password)
 INSERT INTO jobs (lugar_trabajo, cargo, fecha_inicio, fecha_fin, observacion)
   VALUES (1,'La anonima','gerente', 2020-10-11,2021-10-11,"Trabaja bien");
 
---SELECT * FROM users;
+SELECT * FROM users;
 
-SELECT * FROM jobs;
+Select * FROM jobs;

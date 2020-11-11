@@ -1,10 +1,11 @@
+#!/usr/bin/python3
 import os
 import cgi
 import cgitb
 import json
 import logging 
-from backend.users import *
 import sqlalchemy
+from users import User
 from sqlalchemy import *
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -27,37 +28,32 @@ session = Session()
 
 def validarUser ():
     #obtengo los usuarios
+    form = cgi.FieldStorage()
+    logger.exception ("Llegue a login")
+    user1 = session.query(User).all()
+    logger.exception (user1)
+
+    logger.exception (form)
     user=form.getvalue('user')
     password = form.getvalue('pass')
-    user = session.query(User).filter(User.name == user).filter(User.password == password)
+    
     if user is None:
-        logger.exception ("Llegue a login")
+        logger.exception ("No existe")
         return False
     else:
         #Logguedo
+        logger.exception ("Existe")
+
         return True         
 
-
-logger.exception ("Llegue a login")
-logger.exception ("Llegue a login")
-logger.exception ("Llegue a login")
 #Tomamos los valores desde el html 
-form = cgi.FieldStorage()
+#form = cgi.FieldStorage()
 
 if os.environ['REQUEST_METHOD'] == 'GET':
-    import pdb; pdb.set_trace()
-    logger.exception ("Llegue a login")
-    logger.exception ("Llegue a login")
-    logger.exception ("Llegue a login")
-    import pdb; pdb.set_trace()
+    logger.exception ("GET")
     response = validarUser()
 if os.environ['REQUEST_METHOD'] == 'POST':
-
-    logger.exception ("Llegue a login")
-    logger.exception ("Llegue a login")
-    logger.exception ("Llegue a login")
-    import pdb; pdb.set_trace()
+    logger.exception ("POST")
     response = validarUser()  
 
-
-print({'a':'asd'})
+print(json.JSONEncoder().encode(response))
