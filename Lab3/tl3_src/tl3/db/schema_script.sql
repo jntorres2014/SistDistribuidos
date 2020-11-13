@@ -27,9 +27,9 @@ CREATE TABLE cookies(
 INSERT INTO users (name, age, username, password) 
   VALUES ('Pedro Konstantinoff',36,'pedro','un_password'); 
 
-INSERT INTO jobs (lugar_trabajo, cargo, fecha_inicio, fecha_fin, observacion)
-  VALUES (1,'La anonima','gerente', 2020-10-11,2021-10-11,"Trabaja bien");
+--INSERT INTO jobs (id_user,lugar_trabajo, cargo, fecha_inicio, fecha_fin, observacion)
+ -- VALUES (1,'La anonima','gerente', 2020-10-11,2021-10-11,"Trabaja bien");
 
 --SELECT * FROM users;
 
-SELECT * FROM jobs;
+--SELECT * FROM jobs;

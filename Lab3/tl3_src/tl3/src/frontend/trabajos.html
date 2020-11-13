@@ -14,6 +14,52 @@
             $()
         }
 
+        $(document).ready(function(){
+                console.log('Documento listo!!!!');
+                $('#editar').submit(function(event) {  
+                var loginData = {
+                    'user' : $('#user').val(),
+                    'pass' : $('#pass').val()
+                };
+                $.ajax({
+                    type        : 'POST',
+                    url         : '/cgi-bin/login.py',
+                    data        : loginData, 
+                    dataType    : 'json',
+                    encode      : true
+                })
+                .done(function(data){
+                    console.log('Llego hasta done');
+                    alert('usuario correcto');
+                })
+                .fail(function(data){
+                    console.log('Llego hasta fail');
+                    alert('usuario incorrecto');
+                })      
+                event.preventDefault();
+            });  
+            $('#eliminar').submit(function(event) {  
+                var loginData = {
+                    'id_user' : $('#id_user').val()
+                };
+                $.ajax({
+                    type        : 'POST',
+                    url         : '/cgi-bin/login.py',
+                    data        : loginData, 
+                    dataType    : 'json',
+                    encode      : true
+                })
+                .done(function(data){
+                    console.log('Llego hasta done');
+                    alert('usuario correcto');
+                })
+                .fail(function(data){
+                    console.log('Llego hasta fail');
+                    alert('usuario incorrecto');
+                })      
+                event.preventDefault();
+            });  
+
         function get_jobs(){
             $("#jobs_tbody").empty();
             var jqxhr = $.get("/cgi-bin/jobs.py", function( jobs) {
@@ -30,7 +76,9 @@
                     new_tr += '<td>'+user.cargo+'</td>';
                     new_tr += '<td>'+user.fecha_inicio+'</td>';
                     new_tr += '<td>'+user.fecha_fin+'</td>';
-                    new_tr += '<td> <button class = id="toggle_modal" type="button" class="btn btn-dark" data-toggle="modal" data-target="#editarModal">Modificar </button> <button class = "btn btn-danger">Eliminar </button></td></tr>';
+                    new_tr += '<td> <button class= "toggle_modal" type="button" id= "editar" class="btn btn-dark" data-toggle="modal" data-target="#editarModal">Modificar </button>'
+                                    '<button class = "btn btn-danger" id= "eliminar">Eliminar </button></td></tr>';
+                    new_tr += '<td><span class="editar" onclick="transformarEnEditable(this)">Editar</span></td> 
                     console.log(new_tr);
                     $('#jobs_tbody').append(new_tr);
                 }

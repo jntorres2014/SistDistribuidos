@@ -4,8 +4,8 @@ import threading
 import pdb
 from datetime import datetime
 from tkinter import *
-host2= 'ar.pool.ntp.org'
-host = 'jp.pool.ntp.org'
+host2= 'pool.ntp.org'
+host = 'ar.pool.ntp.org'
 import sys
 from tkinter import *
 import time
@@ -20,23 +20,26 @@ class Reloj ():
         self.minutos=0
         self.segundos=0
         self.mili=0
+        self.dia=0
         self.ojiva=0.01
 
 
     def calc_ojiva(self,hora_server,hora_mia):
         print('hora mira y hora server', hora_mia, hora_server) 
-        print ('resta!_',hora_mia - hora_server)
+        resta= hora_mia - hora_server
+        print('RESTAAA!!!', resta.min)
+
         if hora_server > hora_mia:
             ojiva = 0.001
         elif hora_server < hora_mia:
-            ojiva = 2
+            ojiva = 1.5
         else:
-            ojiva= 0.001
+            ojiva= 1
         print('nueva ojiva',ojiva)
         return ojiva 
 
     def obtenerRetardo(self):
-        hora_server= main()
+        hora_server= obtener_hora_server()
         hora_mia= self.ahora
         date_time_obj = datetime.strptime(hora_mia, '%y/%m/%d %H:%M:%S.%f')
         self.ojiva= self.calc_ojiva(hora_server, date_time_obj)
@@ -61,7 +64,8 @@ class Reloj ():
         self.hora= now.hour
         self.minutos= now.minute
         self.segundos= now.second
-        self.mili=0
+        self.dia= now.day
+        self.mili= 0
 
     def iniciarReloj(self):
         #self.iniciar_ventana()
@@ -70,7 +74,7 @@ class Reloj ():
             cont += 1
             sleep(self.ojiva)
             self.mili += 1 
-            if (self.mili == 100): 
+            if (self.mili >99): 
                 self.mili= 0 
                 self.segundos += 1 
                 if (self.segundos == 60 ): 
@@ -81,11 +85,12 @@ class Reloj ():
                         self.hora+= 1 
                         if (self.hora== 24 ): 
                             self.hora=0
-            if cont == 1000:
+                            self.dia +=1
+            if cont == 500:
                 cont = 0
-                self.obtenerRetardo()                
+                #self.obtenerRetardo()                
             #print(self.hora,' ',self.minutos,' ',self.segundos,'', self.mili)
-            self.ahora = repr(20) + '/' + repr(11) + '/' + repr(8)+' '+ repr(self.hora) +':'+ repr(self.minutos)+':' + repr(self.segundos)+'.' + repr(self.mili)
+            self.ahora = repr(20) + '/' + repr(11) + '/' + repr(10)+' '+ repr(self.hora) +':'+ repr(self.minutos)+':' + repr(self.segundos)+'.' + repr(self.mili)
             #import pdb; pdb.set_trace()
             print(self.ahora)
             #r.set(mostrarHora)
@@ -122,7 +127,7 @@ class Reloj ():
 
 
 
-def main():
+def obtener_hora_server():
     c = ntplib.NTPClient()
     #r4.set(host2)
     cont=0
@@ -162,6 +167,25 @@ def main():
     #return prom_ret
     #return hora_server_rtt
 
+
+def obtener_hora_server2():
+    c = ntplib.NTPClient()
+    cont=0
+    menor_rtt=0
+    while cont <3:
+        hora_mia1= datetime.now()
+        response = c.request(host2, version=3)
+        hora_mia2= datetime.now()
+        hora_server= datetime.utcfromtimestamp(response.tx_time)
+        rtt= (hora_mia2 - hora_mia1)/2
+        if  menor_rtt == 0 :
+            menor_rtt = rtt
+        else: 
+            if rtt < menor_rtt:
+                menor_rtt = rtt
+        cont= cont+1
+    hora_server_rtt=  hora_server + menor_rtt        
+    return menor_rtt
 
 reloj= Reloj()
 hilo1 = threading.Thread(target=reloj.iniciar_ventana)

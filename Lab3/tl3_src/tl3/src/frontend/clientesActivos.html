@@ -13,7 +13,7 @@
         function save_user(){
             $()
         }
-
+        
         function get_users(){
             $("#users_tbody").empty();
             var jqxhr = $.get("/cgi-bin/users.py", function( users ) {
@@ -28,7 +28,9 @@
                     new_tr += '<td>'+user.age+'</td>';
                     new_tr += '<td>'+user.username+'</td>';
                     new_tr += '<td>'+user.password+'</td>';
-                    new_tr += '<td> <button class = id="toggle_modal" type="button" class="btn btn-dark" data-toggle="modal" data-target="#editarModal">Modificar </button> <button class = "btn btn-danger">Eliminar </button></td></tr>';
+                    new_tr += '<td> <button class = id="toggle_modal" onclick="transformarEnEditable(this) type="button" class="btn btn-dark" data-toggle="modal" data-target="#editarModal">Modificar </button> <button class = "btn btn-danger">Eliminar </button></td></tr>';
+                    new_tr += '<td><span class="editar" onclick="transformarEnEditable(this)">Editar</span></td>';
+
                     console.log(new_tr);
                     $('#users_tbody').append(new_tr);
                 }

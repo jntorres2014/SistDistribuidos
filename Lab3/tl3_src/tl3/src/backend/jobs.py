@@ -11,7 +11,6 @@ from sqlalchemy.orm import sessionmaker
 
 cgitb.enable()
 
-
 logger= logging.getLogger()
 print("Content-Type: application/json;charset=utf-8")
 print()
@@ -68,14 +67,15 @@ def query_jobs():
 
     return jobs
 
-def update_user(user):
+def update_jobs(user):
     #Tomo lo que viene del formulario
     request = session.query(Jobs).filter(Jobs.id == user.id)
+
     form.getvalue('name')
     session.update(user)
 
 
-def delete_user(id_trabajo):
+def delete_jobs(id_trabajo):
     job=Jobs.query.get(id_trabajo)
     session.delete(job)
     session.commit()
@@ -106,8 +106,10 @@ if os.environ['REQUEST_METHOD'] == 'POST':
 if os.environ['REQUEST_METHOD'] == 'GET':
     logging.exception("Entre al GET desde el if")    
     response = query_jobs()
-#if os.environ['REQUEST_METHOD'] == 'PUT':
-#   response.update_user()
+if os.environ['REQUEST_METHOD'] == 'PUT':
+   response= update_jobs()
+if os.environ['REQUEST_METHOD'] == 'DELETE':
+    response = delete_jobs()
 
 
 
