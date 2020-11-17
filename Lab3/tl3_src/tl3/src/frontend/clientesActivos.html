@@ -18,20 +18,19 @@
             $("#users_tbody").empty();
             var jqxhr = $.get("/cgi-bin/users.py", function( users ) {
                 console.log('load_users || ');
-                console.log(users);
+                //console.log(users);
                 for (row in users){
                     let user = users[row];
-                    console.log(row);
-                    console.log(user);
-                    new_tr = '<tr><th scope="row">'+ user.id + '</th>';
+                    //console.log(row);
+                    //console.log(user);
+                    new_tr = '<tr><th scope="row" >'+ user.id + '</th>';
                     new_tr += '<td>'+user.name+'</td>';
                     new_tr += '<td>'+user.age+'</td>';
                     new_tr += '<td>'+user.username+'</td>';
                     new_tr += '<td>'+user.password+'</td>';
-                    new_tr += '<td> <button class = id="toggle_modal" onclick="transformarEnEditable(this) type="button" class="btn btn-dark" data-toggle="modal" data-target="#editarModal">Modificar </button> <button class = "btn btn-danger">Eliminar </button></td></tr>';
-                    new_tr += '<td><span class="editar" onclick="transformarEnEditable(this)">Editar</span></td>';
+                    new_tr += '<td> <button class ="editar" id="toggle_modal"> Modificar </button> <button class ="borrar" "btn btn-danger">Eliminar </button></td></tr>';
+                    //console.log(new_tr);
 
-                    console.log(new_tr);
                     $('#users_tbody').append(new_tr);
                 }
             })
@@ -42,6 +41,67 @@
         }
         $(document).ready(function(){            
             get_users();
+            $(document).on('click', '.editar', function (event) {
+            event.preventDefault();
+            $(this).closest('new_tr').remove();
+            var formData = {
+                    'id': $('#id').val(),
+                    'name'     : $('#name').val(),
+                    'age'      : $('#age').val(),
+                    'username' : $('#username').val(),
+                    'password' : $('#password').val()
+                };
+                $.ajax({
+                    type        : 'UPDATE',
+                    url         : '/cgi-bin/users.py',
+                    data        : formData, 
+                    dataType    : 'json',
+                    encode      : true
+                })
+                .done(function(data) {
+                    alert('Usuario eliminado correctamente');
+                    $('#toggle_modal').click()
+                    get_users();
+                })
+                .fail(function(data){
+                    alert('No se pudo eliminar el usuario');
+                });
+                event.preventDefault();
+                        
+            });    
+            $(document).on('click', '.borrar', function (event) {
+            $(this).closest('row').remove();
+            console.log(this)
+            console.log(this)
+            console.log(this)
+
+            var formData = {
+                    'id': $('#id').val(),
+                    'name'     : $('#name').val(),
+                    'age'      : $('#age').val(),
+                    'username' : $('#username').val(),
+                    'password' : $('#password').val()
+                };
+                $.ajax({
+                    type        : 'DELETE',
+                    url         : '/cgi-bin/users.py',
+                    data        : formData, 
+                    dataType    : 'json',
+                    encode      : true
+                })
+                .done(function(data) {
+                    alert('Usuario eliminado correctamente');
+                    $('#toggle_modal').click()
+                    get_users();
+                })
+                .fail(function(data){
+                    alert('No se pudo eliminar el usuario');
+                });
+                event.preventDefault();
+            
+            });
+
+
 
             $('#new_user').submit(function(event) {
                 var formData = {

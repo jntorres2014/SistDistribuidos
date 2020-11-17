@@ -55,6 +55,7 @@ class Jobs(declarative_base()):
         self.observacion= observacion
 
 def query_jobs():
+    logging.exception("HICE LA PETICIOnnnn")
     jobs = []
     logging.exception(session.query(Jobs).all())
     for u in session.query(Jobs).all():
@@ -64,16 +65,22 @@ def query_jobs():
         jobs.append(job)
     logging.exception("VALORES FIN")    
     logging.exception(jobs)
-
     return jobs
 
 def update_jobs(user):
     #Tomo lo que viene del formulario
-    request = session.query(Jobs).filter(Jobs.id == user.id)
-
-    form.getvalue('name')
-    session.update(user)
-
+    form= cgi.FieldStorage()
+    job= Jobs(
+        form.getvalue('id_user'),
+            form.getvalue('lugar_trabajo'),
+            form.getvalue('fecha_inicio'),
+            form.getvalue('fecha_fin'),
+            form.getvalue('cargo'),
+            form.getvalue('observacion')
+            )
+    session.update(job)
+    session.commit()
+    
 
 def delete_jobs(id_trabajo):
     job=Jobs.query.get(id_trabajo)
@@ -93,19 +100,21 @@ def create_job():
             form.getvalue('observacion')
             )
         session.add(job)
+        logging.exception(job)
         session.commit()
         return {'error': False}
     except:
         return {'error': True}
 
 
-
 if os.environ['REQUEST_METHOD'] == 'POST':
     logging.exception("Entre al POST")
     response = create_job()
 if os.environ['REQUEST_METHOD'] == 'GET':
-    logging.exception("Entre al GET desde el if")    
     response = query_jobs()
+    logging.exception("DEVOLVIO")
+    logging.exception(response)    
+    logging.exception(type(response))
 if os.environ['REQUEST_METHOD'] == 'PUT':
    response= update_jobs()
 if os.environ['REQUEST_METHOD'] == 'DELETE':

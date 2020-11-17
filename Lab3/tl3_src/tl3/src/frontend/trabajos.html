@@ -62,15 +62,16 @@
 
         function get_jobs(){
             $("#jobs_tbody").empty();
+            console.log('Cargando trabajos de un cliente || ');
             var jqxhr = $.get("/cgi-bin/jobs.py", function( jobs) {
                 console.log('Cargando trabajos de un cliente || ');
                 console.log('Cargando trabajos de un cliente || ');
-                console.log('Cargando trabajos de un cliente || ');
+                console.log('LLegue a jobs || ');
                 console.log(jobs);
+                console.log('Pase jobs');
+
                 for (row in jobs){
                     let job= jobs[row];
-                    console.log(row);
-                    console.log(job);
                     new_tr = '<tr><th scope="row">'+ user.id + '</th>';
                     new_tr = '<tr><th scope="row">'+ user.lugar_trabajo + '</th>';
                     new_tr += '<td>'+user.cargo+'</td>';
@@ -78,7 +79,7 @@
                     new_tr += '<td>'+user.fecha_fin+'</td>';
                     new_tr += '<td> <button class= "toggle_modal" type="button" id= "editar" class="btn btn-dark" data-toggle="modal" data-target="#editarModal">Modificar </button>'
                                     '<button class = "btn btn-danger" id= "eliminar">Eliminar </button></td></tr>';
-                    new_tr += '<td><span class="editar" onclick="transformarEnEditable(this)">Editar</span></td> 
+                    new_tr += '<td><span class="editar" onclick="transformarEnEditable(this)">Editar</span></td>' ;
                     console.log(new_tr);
                     $('#jobs_tbody').append(new_tr);
                 }
@@ -96,12 +97,15 @@
                 console.log('Entre al new jobs')
                 console.log('Entre al new jobs')
                 var formData = {
+                    'id': $('#id').val(),
+                    'id_user': $('#id_user').val(),
                     'lugar_trabajo' : $('#lugar_trabajo').val(),
                     'cargo'     : $('#cargo').val(),
                     'fecha_inicio': $('#fecha_inicio').val(),
                     'fecha_fin' : $('#fecha_fin').val(),
                     'descripcion' : $('#observacion').val()
                 };
+                console.log(formData)
                 $.ajax({
                     type        : 'POST',
                     url         : '/cgi-bin/jobs.py',
@@ -121,6 +125,7 @@
                 event.preventDefault();
             });            
         });
+        });  
     </script>
 </head>
 <body>    
@@ -180,6 +185,16 @@
           </div>
           <div class="modal-body"> 
             <form id="new_jobs" action="/cgi-bin/jobs.py" method="POST" >
+                <!-- <div class="form-group">
+                    <label for="cargo">id</label>
+                    <input type="text" class="form-control" id= "id" name="id"  placeholder="id trabajo">
+                </div>
+
+                <div class="form-group">
+                    <label for="cargo">id trabajador</label>
+                    <input type="text" class="form-control" id= "id_user" name="id_user"  placeholder="trabajador">
+                </div> -->
+
                 <div class="form-group">
                     <label for="cargo">Lugar de Trabajo</label>
                     <input type="text" class="form-control" id="name" name="lugar_trabajo"  placeholder="Empresa donde trabajo">

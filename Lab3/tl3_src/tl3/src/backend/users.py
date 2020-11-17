@@ -3,13 +3,14 @@ import os
 import cgi
 import cgitb
 import json
+import logging
 import sqlalchemy
 from sqlalchemy import *
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 cgitb.enable()
-
+logger= logging.getLogger()
 print("Content-Type: application/json;charset=utf-8")
 print()
 
@@ -62,9 +63,17 @@ def update_user():
     #session.del(user)
 
 
-def delete_user(usuario):
-    request = session.query(User).filter(User.id == usuario.id)    
-    session.delete(request)
+def delete_user():
+    form= cgi.FieldStorage()
+    logger.exception(form)
+    user = form.getvalue('username')
+    for u in session.query(User).all():
+        if (u.username == user):
+            logger.exception ("EXISTEEEE ")
+            session.delete(u)
+            logger.exception("pase el delete")
+            session.commit()
+    session.delete(u)
     session.commit()
 
 def create_user():
@@ -90,7 +99,8 @@ if os.environ['REQUEST_METHOD'] == 'POST':
 if os.environ['REQUEST_METHOD'] == 'PUT':
     response = update_user()
 if os.environ['REQUEST_METHOD'] == 'DELETE':
-    response = delete_user(user)
+    logger.exception('Entro a DELETE')
+    response = delete_user()
 if not response:
     response = {}
 

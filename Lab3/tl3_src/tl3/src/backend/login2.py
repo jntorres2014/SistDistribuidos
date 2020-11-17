@@ -42,6 +42,7 @@ if __name__ == "__main__" :
     if 'HTTP_COOKIE' in os.environ:        
         cookie = cookies.SimpleCookie(os.environ['HTTP_COOKIE'])
         logger.exception('ESTOY EN LOGGIN')
+        form = form
         logger.exception('ESTOY EN LOGGIN')
         logger.exception('ESTOY EN el if de cookie')
         if cookie is None:

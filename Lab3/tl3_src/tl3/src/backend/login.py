@@ -3,13 +3,13 @@ import os
 import cgi
 import cgitb
 import json
-import logging 
 import sqlalchemy
 from sqlalchemy import *
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-cgitb.enable()
+import logging
 
+cgitb.enable()
 logger= logging.getLogger()
 print("Content-Type: application/json;charset=utf-8")
 print()
@@ -50,23 +50,17 @@ class User(declarative_base()):
 def validarUser ():
     #obtengo los usuarios
     form = cgi.FieldStorage()
-    logger.exception ("Llegue a validar user")
-    logger.exception('Datos del form')
-    logger.error(form)
     user=form.getvalue('user')
-    password = form.getvalue('pass')
-        
-    if user1 is None:
-        logger.exception ("No existe")
-        return {'error': False}
-    else:
-        #Logguedo
-        logger.exception ("Existe Es ")
-        logger.debug(user1)
-        return {'error': True}         
+    passw = form.getvalue('pass')
+    var= {'error': False}
+    for u in session.query(User).all():
+        logger.exception(u.username == user)
+        logger.exception(u.username == passw)
+        if (u.username == user) and (u.password == passw):
+            logger.exception ("EXISTEEEE ")
+            var = {'error': True}
+    return var      
 
-#Tomamos los valores desde el html 
-#form = cgi.FieldStorage()
 
 if os.environ['REQUEST_METHOD'] == 'GET':
     logger.exception ("GET")
