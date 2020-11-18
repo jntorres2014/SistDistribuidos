@@ -5,6 +5,10 @@
     age integer NOT NULL, 
     password character(20) NOT NULL
 );
+CREATE TABLE cookies(
+  key character (20)PRIMARY KEY,
+  value character(20) NOT NULL,
+); 
 
 CREATE TABLE jobs(
   id serial PRIMARY KEY,
@@ -18,17 +22,13 @@ CREATE TABLE jobs(
   CONSTRAINT ch_fecha CHECK fecha_inicio < fecha_fin
 );
 
-CREATE TABLE cookies(
-  key character (20)PRIMARY KEY,
-  value character(20) NOT NULL,
-); 
 
 
 INSERT INTO users (name, age, username, password) 
   VALUES ('Pedro Konstantinoff',36,'pedro','un_password'); 
 
 INSERT INTO jobs (id_user,lugar_trabajo, cargo, fecha_inicio, fecha_fin, observacion)
- VALUES (1,'La anonima','gerente', 2020-10-11,2021-10-11,"Trabaja bien");
+  VALUES (1,'La anonima','gerente', 2020-10-11,2021-10-11,'Trabaja bien');
 
 SELECT * FROM users;
 

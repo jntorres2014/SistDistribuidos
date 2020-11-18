@@ -8,7 +8,7 @@ import sqlalchemy
 from sqlalchemy import *
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-
+import datetime
 cgitb.enable()
 
 logger= logging.getLogger()
@@ -54,14 +54,23 @@ class Jobs(declarative_base()):
         self.cargo= cargo
         self.observacion= observacion
 
+    def to_dict(self):
+        return  {k: v.strftime("%d/%m/%Y") if isinstance(v, datetime.datetime)
+            else v
+            for k, v in a.__dict__.items()}
+
 def query_jobs():
-    logging.exception("HICE LA PETICIOnnnn")
+    logging.error("HICE LA PETICIOnnnn")
     jobs = []
     logging.exception(session.query(Jobs).all())
     for u in session.query(Jobs).all():
-        logging.exception("u")
         job = u.__dict__
-        job.pop('_sa_instance_state', None)    
+        job.pop('_sa_instance_state', None)
+        logging.error("TIIIPOOOO")
+        logging.error(job['fecha_fin'])
+        job['fecha_fin'] = job['fecha_fin'].strftime("%m/%d/%Y")
+        job['fecha_inicio'] = job['fecha_inicio'].strftime("%m/%d/%Y")
+        #job.fecha_inicio = job.fecha_inicio.strftime("%m/%d/%Y, %H:%M:%S")    
         jobs.append(job)
     logging.exception("VALORES FIN")    
     logging.exception(jobs)

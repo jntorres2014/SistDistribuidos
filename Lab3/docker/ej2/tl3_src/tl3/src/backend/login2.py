@@ -42,20 +42,22 @@ if __name__ == "__main__" :
     if 'HTTP_COOKIE' in os.environ:        
         cookie = cookies.SimpleCookie(os.environ['HTTP_COOKIE'])
         logger.exception('ESTOY EN LOGGIN')
-        form = form
-        logger.exception('ESTOY EN LOGGIN')
         logger.exception('ESTOY EN el if de cookie')
         if cookie is None:
             session_init_render()
 
         key = cookie.get('session_key').value
         value = cookie.get('session_value').value
-        logger.exception('ESTOY EN LOGGIN')
-        logger.exception('ESTOY EN LOGGIN')
-        logger.exception('ESTOY EN LOGGIN')
-        logger.exception('ESTOY EN LOGGIN')
-        logger.info(key,value)
+        logger.exception(key)
+        logger.exception(value)
+
+  
+        logger.error(key,value)
+        
         database = Database.instance()
+        logger.error("lo de la baseeee")
+        logger.error(database)
+
         if not database.exists_cookie(key, value):
             logger.exception('Error cookie not in database')
             session_init_render()

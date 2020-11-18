@@ -26,7 +26,7 @@ class Database:
         db_string = "postgres://admin:admin@tl3_db:5432/tl3"
         self.db = create_engine(db_string, echo=False)
         self.meta = MetaData(self.db)
-
+        
         self.cookies = Table(
                         'cookies', 
                         self.meta, 
@@ -35,6 +35,7 @@ class Database:
                        )
 
     def exists_cookie(self, key, value):
+        logger.error("Estoy en el existe cookie")
         result = self.meta.tables["cookies"]
         cookie_row = result.select().where(result.c.key==key)
         cookies_rs = self.db.execute(cookie_row)

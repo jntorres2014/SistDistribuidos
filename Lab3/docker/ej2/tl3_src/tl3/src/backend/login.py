@@ -48,24 +48,20 @@ class User(declarative_base()):
 
 
 def validarUser ():
+    
     #obtengo los usuarios
     form = cgi.FieldStorage()
     user=form.getvalue('user')
     passw = form.getvalue('pass')
-    logger.exception("VALORES QUE ENTRAN")
-    logger.exception(user)
-    logger.exception(passw)
-    logger.exception(session.query(User).all())
+    logger.error("VALORES QUE ENTRAN")
+    logger.error(len(user))
+    logger.error(len(passw))
+    logger.exception(session.query(User).all() )
     for u in session.query(User).all():
-        logger.exception("VALORES QUE EXISTEN")
-        logger.exception(u.username)
-        logger.exception(u.password)
-        logger.exception(u.username == user)
-        logger.exception(u.password == passw)
-        if (u.username == user) and (u.password == passw):
+        if (u.username.strip() == user) and (u.password.strip() == passw):
             logger.exception ("EXISTEEEE ")
-            return {'error': True}
-    return {'error': False}
+            return {'error': False}
+    return {'error': True}
     
 
 if os.environ['REQUEST_METHOD'] == 'GET':
