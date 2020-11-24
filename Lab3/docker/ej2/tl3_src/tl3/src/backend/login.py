@@ -53,9 +53,6 @@ def validarUser ():
     form = cgi.FieldStorage()
     user=form.getvalue('user')
     passw = form.getvalue('pass')
-    logger.error("VALORES QUE ENTRAN")
-    logger.error(len(user))
-    logger.error(len(passw))
     logger.exception(session.query(User).all() )
     for u in session.query(User).all():
         if (u.username.strip() == user) and (u.password.strip() == passw):
